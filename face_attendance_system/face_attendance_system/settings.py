@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-#tzct=e#f1pte!p!g4el^nmmf_#x-85rr9bssktf)cz-((z4fy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['facepunch.vercel.app', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -79,12 +79,15 @@ WSGI_APPLICATION = 'face_attendance_system.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'face_attendance',
-        'USER': 'root',
-        'PASSWORD': 'Shreya@2004',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'neondb',
+        'USER': 'neondb_owner',
+        'PASSWORD': 'npg_qwfhYcSO3x4T',
+        'HOST': 'ep-proud-haze-a5mbqbq3-pooler.us-east-2.aws.neon.tech',
+        'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
 }
 
@@ -149,6 +152,7 @@ SIMPLE_JWT = {
 # CORS Settings
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Vite's default port
+    "https://facepunch.vercel.app",  # Your frontend domain
 ]
 
 CORS_ALLOW_CREDENTIALS = True
