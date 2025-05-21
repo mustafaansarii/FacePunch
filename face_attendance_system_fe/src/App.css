@@ -1,8 +1,133 @@
 @import "tailwindcss";
 
 body {
-  @apply bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460];
+  @apply bg-gradient-to-br from-[#f5f7fa] via-[#e4e7eb] to-[#d1d5db] dark:from-[#1a1a2e] dark:via-[#16213e] dark:to-[#0f3460];
 }
 
+/* Clean and Professional Theme */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
+body {
+  background-color: #ffffff;
+  background-image:
+    linear-gradient(to right, rgba(240, 240, 240, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(240, 240, 240, 0.1) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+  background-repeat: repeat;
+  color: #333333;
+  line-height: 1.6;
+}
 
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #0a0a0a;
+    background-image:
+      linear-gradient(to right, rgba(20, 20, 20, 0.1) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(20, 20, 20, 0.1) 1px, transparent 1px);
+    color: #f5f5f5;
+  }
+}
+
+/* Subtle Accent Glow */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05), transparent);
+  pointer-events: none;
+  z-index: -1;
+}
+
+@media (prefers-color-scheme: dark) {
+  body::before {
+    background: radial-gradient(circle at 50% 0%, rgba(100, 100, 200, 0.1), transparent);
+  }
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
+}
+
+body.light-mode {
+  @apply bg-gradient-to-br from-[#f5f7fa] via-[#e4e7eb] to-[#d1d5db];
+  background-color: #ffffff;
+  background-image:
+    linear-gradient(to right, rgba(240, 240, 240, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(240, 240, 240, 0.1) 1px, transparent 1px);
+  color: var(--text-primary);
+  @apply text-gray-900;
+  /* slate-900 */
+}
+
+body.dark-mode {
+  @apply bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460];
+  background-color: #0a0a0a;
+  background-image:
+    linear-gradient(to right, rgba(20, 20, 20, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(20, 20, 20, 0.1) 1px, transparent 1px);
+  color: var(--text-primary);
+  @apply text-gray-50;
+  /* slate-50 */
+}
+
+/* Remove the @media prefers-color-scheme rules since we're handling it manually */
+
+/* For secondary text */
+.text-secondary {
+  @apply text-gray-500 dark:text-gray-400;
+}
+
+/* For disabled text */
+.text-disabled {
+  @apply text-gray-400 dark:text-gray-500;
+}
+
+:root {
+  --text-primary: #1e293b;
+  /* slate-900 */
+  --text-secondary: #64748b;
+  /* slate-500 */
+  --text-disabled: #94a3b8;
+  /* slate-400 */
+  --background-default: #f9fafb;
+  /* gray-50 */
+  --background-paper: #ffffff;
+  /* white */
+}
+
+.dark {
+  --text-primary: #f8fafc;
+  /* slate-50 */
+  --text-secondary: #94a3b8;
+  /* slate-400 */
+  --text-disabled: #64748b;
+  /* slate-500 */
+  --background-default: #0f172a;
+  /* slate-900 */
+  --background-paper: #1e293b;
+  /* slate-800 */
+}
+
+.main-content {
+  @apply bg-white dark:bg-slate-800;
+  background-color: var(--background-paper);
+}
+
+.layout-container {
+  @apply min-h-screen;
+  background-color: var(--background-default);
+}

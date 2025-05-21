@@ -12,12 +12,17 @@ import {
   Breadcrumbs,
   Link,
   CircularProgress,
+  Card,
+  CardHeader,
+  CardContent,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import config from "../config";
 import toast from "react-hot-toast";
 import Layout from "../components/Layout";
+import { motion } from "framer-motion";
+import HomeIcon from "@mui/icons-material/Home";
 
 const AttendanceRecords = () => {
   const [records, setRecords] = useState([]);
@@ -50,79 +55,70 @@ const AttendanceRecords = () => {
 
   return (
     <Layout>
-      <Box className="w-full p-6" sx={{ color: "#fff" }}>
-        <Breadcrumbs aria-label="breadcrumb" className="mb-6" sx={{ color: "#fff" }}>
+      <Box className="w-full p-6">
+        <Breadcrumbs aria-label="breadcrumb" className="mb-6">
           <Link
             underline="hover"
             color="inherit"
             onClick={() => navigate("/")}
-            className="cursor-pointer"
-            sx={{ color: "#fff" }}
+            className="cursor-pointer flex items-center"
           >
+            <HomeIcon className="mr-1" fontSize="small" />
             Home
           </Link>
-          <Typography color="text.primary" sx={{ color: "#fff" }}>
-            Attendance Records
-          </Typography>
+          <Typography color="text.primary">Attendance Records</Typography>
         </Breadcrumbs>
 
-        <Typography
-          variant="h4"
-          component="h1"
-          className="mb-8 font-bold text-primary"
-          sx={{ color: "#fff" }}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full"
         >
-          Attendance Records
-        </Typography>
-
-        {loading ? (
-          <Box className="flex justify-center">
-            <CircularProgress sx={{ color: "#fff" }} />
-          </Box>
-        ) : (
-          <TableContainer
-            component={Paper}
-            elevation={4}
-            className="rounded-xl backdrop-blur-sm overflow-x-auto"
-            sx={{
-              backgroundColor: "rgba(30,30,30,0.85)",
-              color: "#fff",
-            }}
-          >
-            <Table className="min-w-full" aria-label="attendance records">
-              <TableHead>
-                <TableRow>
-                  <TableCell className="font-bold" sx={{ color: "#fff", fontWeight: "bold" }}>ID</TableCell>
-                  <TableCell className="font-bold" sx={{ color: "#fff", fontWeight: "bold" }}>Name</TableCell>
-                  <TableCell className="font-bold" sx={{ color: "#fff", fontWeight: "bold" }}>Email</TableCell>
-                  <TableCell className="font-bold" sx={{ color: "#fff", fontWeight: "bold" }}>
-                    Last Attendance Date
-                  </TableCell>
-                  <TableCell className="font-bold" sx={{ color: "#fff", fontWeight: "bold" }}>
-                    Last Attendance Time
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {records.map((record) => (
-                  <TableRow
-                    key={record.id}
-                    className="hover:bg-gray-50"
-                    sx={{
-                      "&:hover": { backgroundColor: "rgba(255,255,255,0.08)" }
-                    }}
-                  >
-                    <TableCell sx={{ color: "#fff" }}>{record.id}</TableCell>
-                    <TableCell sx={{ color: "#fff" }}>{record.name}</TableCell>
-                    <TableCell sx={{ color: "#fff" }}>{record.email}</TableCell>
-                    <TableCell sx={{ color: "#fff" }}>{record.last_attendance_date}</TableCell>
-                    <TableCell sx={{ color: "#fff" }}>{record.last_attendance_time}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        )}
+          <Card className="border border-gray-200 shadow-xl">
+            <CardHeader
+              title="Attendance Records"
+              subheader="View all attendance records tracked by the system"
+              titleTypographyProps={{ variant: "h4", fontWeight: 700 }}
+            />
+            <CardContent>
+              {loading ? (
+                <Box className="flex justify-center items-center h-40">
+                  <CircularProgress />
+                </Box>
+              ) : (
+                <TableContainer 
+                  component={Paper} 
+                  className="rounded-md"
+                  sx={{ border: 1, borderColor: 'divider' }}
+                >
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>ID</TableCell>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Email</TableCell>
+                        <TableCell>Last Attendance Date</TableCell>
+                        <TableCell>Last Attendance Time</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {records.map((record) => (
+                        <TableRow key={record.id} hover>
+                          <TableCell>{record.id}</TableCell>
+                          <TableCell>{record.name}</TableCell>
+                          <TableCell>{record.email}</TableCell>
+                          <TableCell>{record.last_attendance_date}</TableCell>
+                          <TableCell>{record.last_attendance_time}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              )}
+            </CardContent>
+          </Card>
+        </motion.div>
       </Box>
     </Layout>
   );

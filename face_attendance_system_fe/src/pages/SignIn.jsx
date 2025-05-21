@@ -12,6 +12,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Layout from "../components/Layout";
+import { motion } from "framer-motion";
+import { Home } from "@mui/icons-material";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -52,9 +54,8 @@ const SignIn = () => {
       localStorage.setItem("access_token", data.access);
       localStorage.setItem("refresh_token", data.refresh);
 
-      // Show toast and navigate
       toast.success("Login successful!");
-      setTimeout(() => navigate("/"), 100); // Small delay to ensure toast renders
+      setTimeout(() => navigate("/"), 100);
     } catch (err) {
       setError(err.message);
       toast.error(err.message);
@@ -65,80 +66,104 @@ const SignIn = () => {
 
   return (
     <Layout>
-      <Box className="flex justify-center w-full items-center">
-        <Paper
-          elevation={4}
-          className="p-8 w-full max-w-md rounded-xl backdrop-blur-sm"
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '100%', maxWidth: 'sm', mx: 'auto' }}>
+        <Breadcrumbs sx={{ mb: 2 }}>
+          <Link
+            underline="hover"
+            color="inherit"
+            onClick={() => navigate("/")}
+            sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+          >
+            <Home sx={{ mr: 0.5 }} fontSize="inherit" />
+            Home
+          </Link>
+          <Typography color="text.primary">Sign In</Typography>
+        </Breadcrumbs>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          style={{ width: '100%' }}
         >
-          <Breadcrumbs
-            aria-label="breadcrumb"
-            className="mb-4 flex justify-center"
+          <Paper
+            elevation={4}
+            sx={{
+              p: 4,
+              border: '1px solid',
+              borderColor: 'divider',
+              borderRadius: 2,
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+            }}
           >
-            <Link
-              underline="hover"
-              color="primary"
-              onClick={() => navigate("/")}
-              className="cursor-pointer font-semibold"
-            >
-              Home
-            </Link>
-            <Typography color="primary" className="font-semibold">
-              Sign In
-            </Typography>
-          </Breadcrumbs>
+            <Box sx={{ textAlign: 'center', mb: 3 }}>
+              <Typography variant="h4" component="h1" sx={{ fontWeight: 700, mb: 1 }}>
+                Sign In
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                Enter your credentials to access your account
+              </Typography>
+            </Box>
 
-          <Typography
-            variant="h4"
-            component="h1"
-            className="mb-6 text-center font-bold text-primary"
-          >
-            Sign in to your account
-          </Typography>
+            {error && (
+              <Typography color="error" sx={{ textAlign: 'center', mb: 2 }}>
+                {error}
+              </Typography>
+            )}
 
-          {error && (
-            <Typography className="mb-4 text-center text-sm text-red-500">
-              {error}
-            </Typography>
-          )}
+            <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                  Username
+                </Typography>
+                <TextField
+                  id="username"
+                  name="username"
+                  placeholder="Enter your username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  required
+                  fullWidth
+                  size="small"
+                />
+              </Box>
 
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            className="flex flex-col gap-4"
-          >
-            <TextField
-              fullWidth
-              label="Username"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              required
-              className="mb-2"
-            />
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                  Password
+                </Typography>
+                <TextField
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  fullWidth
+                  size="small"
+                />
+              </Box>
 
-            <TextField
-              fullWidth
-              label="Password"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              className="mb-2"
-            />
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              size="large"
-              className="py-3 rounded-lg font-semibold"
-              disabled={loading}
-            >
-              {loading ? "Signing in..." : "Sign in"}
-            </Button>
-          </Box>
-        </Paper>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                disabled={loading}
+                sx={{
+                  mt: 2,
+                  py: 1.5,
+                  background: 'linear-gradient(to right, #1976d2, #9c27b0)',
+                  '&:hover': {
+                    background: 'linear-gradient(to right, #1565c0, #7b1fa2)',
+                  }
+                }}
+              >
+                {loading ? "Signing in..." : "Sign in"}
+              </Button>
+            </Box>
+          </Paper>
+        </motion.div>
       </Box>
     </Layout>
   );

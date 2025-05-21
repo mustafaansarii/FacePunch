@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
+import { motion } from "framer-motion";
 
 const Register = () => {
   const webcamRef = useRef(null);
@@ -91,107 +92,137 @@ const Register = () => {
 
   return (
     <Layout>
-      <Box className="flex justify-center w-full items-center">
-        <Paper
-          elevation={4}
-          className="p-8 w-full max-w-3xl rounded-xl backdrop-blur-sm"
+      <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          style={{ width: '100%', maxWidth: '800px' }}
         >
-          <Breadcrumbs aria-label="breadcrumb" className="mb-6">
-            <Link
-              underline="hover"
-              color="inherit"
-              onClick={() => navigate("/")}
-              className="cursor-pointer"
-            >
-              Home
-            </Link>
-            <Typography color="text.primary">Registration</Typography>
-          </Breadcrumbs>
-
-          <Typography
-            variant="h4"
-            component="h1"
-            className="mb-8 font-bold text-center text-primary"
+          <Paper
+            elevation={4}
+            sx={{
+              p: 4,
+              width: '100%',
+              borderRadius: 2,
+              border: '1px solid',
+              borderColor: 'divider',
+            }}
           >
-            Face Registration
-          </Typography>
+            <Typography
+              variant="h4"
+              component="h1"
+              sx={{ 
+                fontWeight: 700, 
+                color: 'primary.main', 
+                mb: 3,
+                textAlign: 'center'
+              }}
+            >
+              Face Registration
+            </Typography>
 
-          <Grid container spacing={6}>
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Name"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                margin="normal"
-                className="mb-4"
-              />
-              <TextField
-                fullWidth
-                label="Email"
-                name="email"
-                type="email"
-                value={form.email}
-                onChange={handleChange}
-                margin="normal"
-                className="mb-4"
-              />
-              <FormControl fullWidth margin="normal" className="mb-4">
-                <InputLabel>Gender</InputLabel>
-                <Select
-                  name="gender"
-                  value={form.gender}
-                  label="Gender"
+            <Grid container spacing={6}>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Name"
+                  name="name"
+                  value={form.name}
                   onChange={handleChange}
-                >
-                  <MenuItem value="male">Male</MenuItem>
-                  <MenuItem value="female">Female</MenuItem>
-                  <MenuItem value="other">Other</MenuItem>
-                </Select>
-              </FormControl>
-              <TextField
-                fullWidth
-                label="Date of Birth"
-                name="dob"
-                type="date"
-                InputLabelProps={{ shrink: true }}
-                value={form.dob}
-                onChange={handleChange}
-                margin="normal"
-                className="mb-4"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Box className="flex flex-col items-center">
-                {hasCamera ? (
-                  <Webcam
-                    ref={webcamRef}
-                    screenshotFormat="image/jpeg"
-                    width={320}
-                    height={240}
-                    className="rounded-lg mb-6"
-                    videoConstraints={{
-                      facingMode: "user",
+                  sx={{ mb: 2 }}
+                />
+                <TextField
+                  fullWidth
+                  label="Email"
+                  name="email"
+                  type="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  sx={{ mb: 2 }}
+                />
+                <FormControl fullWidth sx={{ mb: 2 }}>
+                  <InputLabel>Gender</InputLabel>
+                  <Select
+                    name="gender"
+                    value={form.gender}
+                    label="Gender"
+                    onChange={handleChange}
+                  >
+                    <MenuItem value="male">Male</MenuItem>
+                    <MenuItem value="female">Female</MenuItem>
+                    <MenuItem value="other">Other</MenuItem>
+                  </Select>
+                </FormControl>
+                <TextField
+                  fullWidth
+                  label="Date of Birth"
+                  name="dob"
+                  type="date"
+                  InputLabelProps={{ shrink: true }}
+                  value={form.dob}
+                  onChange={handleChange}
+                  sx={{ mb: 2 }}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  {hasCamera ? (
+                    <Webcam
+                      ref={webcamRef}
+                      screenshotFormat="image/jpeg"
+                      width={320}
+                      height={240}
+                      sx={{ 
+                        borderRadius: '12px', 
+                        mb: 3,
+                        border: '1px solid',
+                        borderColor: 'divider'
+                      }}
+                      videoConstraints={{
+                        facingMode: "user",
+                      }}
+                    />
+                  ) : (
+                    <Box
+                      sx={{
+                        width: 320,
+                        height: 240,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: '12px',
+                        mb: 3,
+                        border: '1px solid',
+                        borderColor: 'divider'
+                      }}
+                    >
+                      <Typography color="error">Camera not detected</Typography>
+                    </Box>
+                  )}
+                  <Button
+                    variant="contained"
+                    onClick={captureAndSubmit}
+                    sx={{
+                      py: 1.5,
+                      borderRadius: 2,
+                      fontWeight: 600,
+                      width: '100%',
+                      maxWidth: '320px',
+                      background: 'linear-gradient(to right, #1976d2, #9c27b0)',
+                      '&:hover': {
+                        background: 'linear-gradient(to right, #1565c0, #7b1fa2)',
+                      }
                     }}
-                  />
-                ) : (
-                  <Box className="w-80 h-60 flex items-center justify-center rounded-lg mb-6">
-                    <Typography color="error">Camera not detected</Typography>
-                  </Box>
-                )}
-                <Button
-                  variant="contained"
-                  onClick={captureAndSubmit}
-                  className="py-3 rounded-lg font-semibold w-full max-w-xs"
-                  disabled={!hasCamera}
-                >
-                  Register Face
-                </Button>
-              </Box>
+                    disabled={!hasCamera}
+                  >
+                    Register Face
+                  </Button>
+                </Box>
+              </Grid>
             </Grid>
-          </Grid>
-        </Paper>
+          </Paper>
+        </motion.div>
       </Box>
     </Layout>
   );

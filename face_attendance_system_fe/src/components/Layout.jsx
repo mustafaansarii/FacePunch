@@ -1,22 +1,29 @@
 import React from "react";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 import { Box } from "@mui/material";
 
 export default function Layout({ children }) {
   return (
-    <Box className="min-h-screen flex flex-col items-center pb-16">
+    <Box
+      className="layout-container"
+      sx={{
+        bgcolor: "background.default",
+        color: "text.primary",
+      }}
+    >
       <Navbar />
       <Box
+        component="main"
+        className="main-content"
         sx={{
-          width: "100%",
-          maxWidth: "100%",
-          mx: "auto",
-          px: { xs: 2, sm: 4 },
-          pt: { xs: 8, sm: 12 },
+          flex: 1,
+          bgcolor: "background.paper",
         }}
       >
         {children}
       </Box>
+      <Footer />
     </Box>
   );
 }

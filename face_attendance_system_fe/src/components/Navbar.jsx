@@ -4,19 +4,31 @@ import {
   Home as HomeIcon,
   ChevronLeft,
   Camera as CameraIcon,
+  PersonAdd as RegisterIcon,
+  Schedule as AttendanceIcon,
+  ExitToApp as SignOutIcon,
+  Person as SignInIcon,
+  Brightness4 as Brightness4Icon,
+  Brightness7 as Brightness7Icon,
 } from "@mui/icons-material";
 import {
   Button,
   Typography,
   IconButton,
   Box,
+  AppBar,
+  Toolbar,
+  useScrollTrigger,
+  Slide,
 } from "@mui/material";
+import { useTheme } from "../contexts/ThemeContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const accessToken = localStorage.getItem("access_token");
   const [isScrolled, setIsScrolled] = useState(false);
+  const { themeMode, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,39 +50,28 @@ const Navbar = () => {
   };
 
   return (
-    <Box
-      component="nav"
+    <AppBar
+      position="fixed"
+      elevation={isScrolled ? 4 : 0}
       sx={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bgcolor: isScrolled
+        backgroundColor: isScrolled
           ? "rgba(255, 255, 255, 0.8)"
-          : "rgba(255, 255, 255, 0.9)",
+          : "transparent",
         backdropFilter: isScrolled ? "blur(8px)" : "none",
         transition: "all 0.3s ease",
-        zIndex: 1100,
-        borderBottom: "1px solid #e2e8f0",
-        px: 3,
-        py: 1,
+        borderBottom: isScrolled ? "1px solid rgba(0, 0, 0, 0.12)" : "none",
+        zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          maxWidth: "1280px",
-          mx: "auto",
-        }}
-      >
+      <Toolbar sx={{ maxWidth: "1280px", mx: "auto", width: "100%" }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <CameraIcon sx={{ color: "#4f46e5" }} />
           <Typography variant="h6" sx={{ fontWeight: 700, color: "#4f46e5" }}>
             FacePunch
           </Typography>
         </Box>
+
+        <Box sx={{ flexGrow: 1 }} />
 
         <Box sx={{ display: "flex", gap: 1 }}>
           {accessToken ? (
@@ -80,7 +81,12 @@ const Navbar = () => {
                 to="/register"
                 variant="contained"
                 size="small"
-                sx={{ bgcolor: "#4f46e5", "&:hover": { bgcolor: "#4338ca" } }}
+                startIcon={<RegisterIcon />}
+                sx={{
+                  bgcolor: "#4f46e5",
+                  "&:hover": { bgcolor: "#4338ca" },
+                  textTransform: "none",
+                }}
               >
                 Register
               </Button>
@@ -89,7 +95,12 @@ const Navbar = () => {
                 to="/attendance"
                 variant="contained"
                 size="small"
-                sx={{ bgcolor: "#4f46e5", "&:hover": { bgcolor: "#4338ca" } }}
+                startIcon={<AttendanceIcon />}
+                sx={{
+                  bgcolor: "#4f46e5",
+                  "&:hover": { bgcolor: "#4338ca" },
+                  textTransform: "none",
+                }}
               >
                 Mark Attendance
               </Button>
@@ -98,6 +109,8 @@ const Navbar = () => {
                 color="error"
                 variant="outlined"
                 size="small"
+                startIcon={<SignOutIcon />}
+                sx={{ textTransform: "none" }}
               >
                 Sign Out
               </Button>
@@ -108,14 +121,23 @@ const Navbar = () => {
               to="/signin"
               variant="outlined"
               size="small"
-              sx={{ color: "#4f46e5", borderColor: "#4f46e5" }}
+              startIcon={<SignInIcon />}
+              sx={{
+                color: "#4f46e5",
+                borderColor: "#4f46e5",
+                textTransform: "none",
+              }}
             >
               Sign In
             </Button>
           )}
         </Box>
-      </Box>
-    </Box>
+
+        <IconButton onClick={toggleTheme} color="inherit">
+          {themeMode === "light" ? <Brightness4Icon /> : <Brightness7Icon />}
+        </IconButton>
+      </Toolbar>
+    </AppBar>
   );
 };
 
