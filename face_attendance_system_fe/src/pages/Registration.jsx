@@ -18,7 +18,6 @@ import {
   Link,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import Layout from "../components/Layout";
 import { motion } from "framer-motion";
 
 const Register = () => {
@@ -91,140 +90,157 @@ const Register = () => {
   };
 
   return (
-    <Layout>
-      <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          style={{ width: '100%', maxWidth: '800px' }}
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        width: '100%',
+        p: 2,
+        marginTop: '-30px'
+      }}
+    >
+      <Box sx={{ width: '100%', maxWidth: '800px', mb: 2 }}>
+        <Breadcrumbs aria-label="breadcrumb">
+          <Link color="inherit" href="/" underline="hover">
+            Home
+          </Link>
+          <Typography color="text.primary">Face Registration</Typography>
+        </Breadcrumbs>
+      </Box>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        style={{ width: '100%', maxWidth: '800px' }}
+      >
+        <Paper
+          elevation={4}
+          sx={{
+            p: 4,
+            width: '100%',
+            borderRadius: 2,
+            border: '1px solid',
+            borderColor: 'divider',
+          }}
         >
-          <Paper
-            elevation={4}
+          <Typography
+            variant="h4"
+            component="h1"
             sx={{
-              p: 4,
-              width: '100%',
-              borderRadius: 2,
-              border: '1px solid',
-              borderColor: 'divider',
+              fontWeight: 700,
+              color: 'primary.main',
+              mb: 3,
+              textAlign: 'center'
             }}
           >
-            <Typography
-              variant="h4"
-              component="h1"
-              sx={{ 
-                fontWeight: 700, 
-                color: 'primary.main', 
-                mb: 3,
-                textAlign: 'center'
-              }}
-            >
-              Face Registration
-            </Typography>
+            Face Registration
+          </Typography>
 
-            <Grid container spacing={6}>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Name"
-                  name="name"
-                  value={form.name}
+          <Grid container spacing={6}>
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Name"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                sx={{ mb: 2 }}
+              />
+              <TextField
+                fullWidth
+                label="Email"
+                name="email"
+                type="email"
+                value={form.email}
+                onChange={handleChange}
+                sx={{ mb: 2 }}
+              />
+              <FormControl fullWidth sx={{ mb: 2 }}>
+                <InputLabel>Gender</InputLabel>
+                <Select
+                  name="gender"
+                  value={form.gender}
+                  label="Gender"
                   onChange={handleChange}
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  fullWidth
-                  label="Email"
-                  name="email"
-                  type="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  sx={{ mb: 2 }}
-                />
-                <FormControl fullWidth sx={{ mb: 2 }}>
-                  <InputLabel>Gender</InputLabel>
-                  <Select
-                    name="gender"
-                    value={form.gender}
-                    label="Gender"
-                    onChange={handleChange}
-                  >
-                    <MenuItem value="male">Male</MenuItem>
-                    <MenuItem value="female">Female</MenuItem>
-                    <MenuItem value="other">Other</MenuItem>
-                  </Select>
-                </FormControl>
-                <TextField
-                  fullWidth
-                  label="Date of Birth"
-                  name="dob"
-                  type="date"
-                  InputLabelProps={{ shrink: true }}
-                  value={form.dob}
-                  onChange={handleChange}
-                  sx={{ mb: 2 }}
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  {hasCamera ? (
-                    <Webcam
-                      ref={webcamRef}
-                      screenshotFormat="image/jpeg"
-                      width={320}
-                      height={240}
-                      sx={{ 
-                        borderRadius: '12px', 
-                        mb: 3,
-                        border: '1px solid',
-                        borderColor: 'divider'
-                      }}
-                      videoConstraints={{
-                        facingMode: "user",
-                      }}
-                    />
-                  ) : (
-                    <Box
-                      sx={{
-                        width: 320,
-                        height: 240,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        borderRadius: '12px',
-                        mb: 3,
-                        border: '1px solid',
-                        borderColor: 'divider'
-                      }}
-                    >
-                      <Typography color="error">Camera not detected</Typography>
-                    </Box>
-                  )}
-                  <Button
-                    variant="contained"
-                    onClick={captureAndSubmit}
-                    sx={{
-                      py: 1.5,
-                      borderRadius: 2,
-                      fontWeight: 600,
-                      width: '100%',
-                      maxWidth: '320px',
-                      background: 'linear-gradient(to right, #1976d2, #9c27b0)',
-                      '&:hover': {
-                        background: 'linear-gradient(to right, #1565c0, #7b1fa2)',
-                      }
-                    }}
-                    disabled={!hasCamera}
-                  >
-                    Register Face
-                  </Button>
-                </Box>
-              </Grid>
+                >
+                  <MenuItem value="male">Male</MenuItem>
+                  <MenuItem value="female">Female</MenuItem>
+                  <MenuItem value="other">Other</MenuItem>
+                </Select>
+              </FormControl>
+              <TextField
+                fullWidth
+                label="Date of Birth"
+                name="dob"
+                type="date"
+                InputLabelProps={{ shrink: true }}
+                value={form.dob}
+                onChange={handleChange}
+                sx={{ mb: 2 }}
+              />
             </Grid>
-          </Paper>
-        </motion.div>
-      </Box>
-    </Layout>
+            <Grid item xs={12} md={6}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                {hasCamera ? (
+                  <Webcam
+                    ref={webcamRef}
+                    screenshotFormat="image/jpeg"
+                    width={320}
+                    height={240}
+                    sx={{
+                      borderRadius: '12px',
+                      mb: 3,
+                      border: '1px solid',
+                      borderColor: 'divider'
+                    }}
+                    videoConstraints={{
+                      facingMode: "user",
+                    }}
+                  />
+                ) : (
+                  <Box
+                    sx={{
+                      width: 320,
+                      height: 240,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: '12px',
+                      mb: 3,
+                      border: '1px solid',
+                      borderColor: 'divider'
+                    }}
+                  >
+                    <Typography color="error">Camera not detected</Typography>
+                  </Box>
+                )}
+                <Button
+                  variant="contained"
+                  onClick={captureAndSubmit}
+                  sx={{
+                    py: 1.5,
+                    borderRadius: 2,
+                    fontWeight: 600,
+                    width: '100%',
+                    maxWidth: '320px',
+                    background: 'linear-gradient(to right, #1976d2, #9c27b0)',
+                    '&:hover': {
+                      background: 'linear-gradient(to right, #1565c0, #7b1fa2)',
+                    }
+                  }}
+                  disabled={!hasCamera}
+                >
+                  Register Face
+                </Button>
+              </Box>
+            </Grid>
+          </Grid>
+        </Paper>
+      </motion.div>
+    </Box>
   );
 };
 

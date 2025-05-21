@@ -125,9 +125,11 @@ body.dark-mode {
 .main-content {
   @apply bg-white dark:bg-slate-800;
   background-color: var(--background-paper);
+  overflow-x: hidden;
 }
 
 .layout-container {
   @apply min-h-screen;
   background-color: var(--background-default);
+  overflow-x: hidden;
 }

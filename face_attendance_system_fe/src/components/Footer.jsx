@@ -10,8 +10,10 @@ const Footer = () => {
         py: 2,
         borderTop: '1px solid rgba(255, 255, 255, 0.1)',
         mt: 'auto',
-        backgroundColor: 'rgba(30, 30, 30, 0.8)',
-        backdropFilter: 'blur(8px)',
+        bottom: 0,
+        left: 0,
+        backgroundColor: '#121212', // Optional: Add a background color for better visibility
+        zIndex: 1000, // Ensure it's above other content
       }}
     >
       <Box sx={{

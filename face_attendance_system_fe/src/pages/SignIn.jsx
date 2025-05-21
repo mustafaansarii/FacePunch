@@ -1,19 +1,8 @@
 import React, { useState } from "react";
 import config from "../config";
-import {
-  TextField,
-  Button,
-  Typography,
-  Box,
-  Paper,
-  Breadcrumbs,
-  Link,
-} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import Layout from "../components/Layout";
-import { motion } from "framer-motion";
-import { Home } from "@mui/icons-material";
+import { Box, TextField, Button, Typography, Paper } from "@mui/material";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -65,107 +54,48 @@ const SignIn = () => {
   };
 
   return (
-    <Layout>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '100%', maxWidth: 'sm', mx: 'auto' }}>
-        <Breadcrumbs sx={{ mb: 2 }}>
-          <Link
-            underline="hover"
-            color="inherit"
-            onClick={() => navigate("/")}
-            sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+    <Box display="flex" justifyContent="center" alignItems="center">
+      <Paper elevation={3} sx={{ width: 400, p: 4 }}>
+        <Typography variant="h4" align="center" gutterBottom>
+          Sign In
+        </Typography>
+        {error && (
+          <Typography color="error" align="center" mb={2}>
+            {error}
+          </Typography>
+        )}
+        <Box component="form" onSubmit={handleSubmit}>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Username"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            required
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Password"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+          <Button
+            fullWidth
+            variant="contained"
+            type="submit"
+            disabled={loading}
+            sx={{ mt: 2 }}
           >
-            <Home sx={{ mr: 0.5 }} fontSize="inherit" />
-            Home
-          </Link>
-          <Typography color="text.primary">Sign In</Typography>
-        </Breadcrumbs>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          style={{ width: '100%' }}
-        >
-          <Paper
-            elevation={4}
-            sx={{
-              p: 4,
-              border: '1px solid',
-              borderColor: 'divider',
-              borderRadius: 2,
-              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-            }}
-          >
-            <Box sx={{ textAlign: 'center', mb: 3 }}>
-              <Typography variant="h4" component="h1" sx={{ fontWeight: 700, mb: 1 }}>
-                Sign In
-              </Typography>
-              <Typography variant="body1" color="text.secondary">
-                Enter your credentials to access your account
-              </Typography>
-            </Box>
-
-            {error && (
-              <Typography color="error" sx={{ textAlign: 'center', mb: 2 }}>
-                {error}
-              </Typography>
-            )}
-
-            <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                  Username
-                </Typography>
-                <TextField
-                  id="username"
-                  name="username"
-                  placeholder="Enter your username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  required
-                  fullWidth
-                  size="small"
-                />
-              </Box>
-
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                  Password
-                </Typography>
-                <TextField
-                  id="password"
-                  name="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                  fullWidth
-                  size="small"
-                />
-              </Box>
-
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                disabled={loading}
-                sx={{
-                  mt: 2,
-                  py: 1.5,
-                  background: 'linear-gradient(to right, #1976d2, #9c27b0)',
-                  '&:hover': {
-                    background: 'linear-gradient(to right, #1565c0, #7b1fa2)',
-                  }
-                }}
-              >
-                {loading ? "Signing in..." : "Sign in"}
-              </Button>
-            </Box>
-          </Paper>
-        </motion.div>
-      </Box>
-    </Layout>
+            {loading ? "Signing in..." : "Sign In"}
+          </Button>
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 

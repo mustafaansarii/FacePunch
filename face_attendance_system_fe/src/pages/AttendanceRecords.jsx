@@ -20,8 +20,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import config from "../config";
 import toast from "react-hot-toast";
-import Layout from "../components/Layout";
-import { motion } from "framer-motion";
 import HomeIcon from "@mui/icons-material/Home";
 
 const AttendanceRecords = () => {
@@ -54,73 +52,68 @@ const AttendanceRecords = () => {
   }, []);
 
   return (
-    <Layout>
-      <Box className="w-full p-6">
-        <Breadcrumbs aria-label="breadcrumb" className="mb-6">
-          <Link
-            underline="hover"
-            color="inherit"
-            onClick={() => navigate("/")}
-            className="cursor-pointer flex items-center"
-          >
-            <HomeIcon className="mr-1" fontSize="small" />
-            Home
-          </Link>
-          <Typography color="text.primary">Attendance Records</Typography>
-        </Breadcrumbs>
+    <Box className="w-full p-6 flex justify-center">
+      <Box maxWidth="1200px" className="w-full">
+        <Box className="flex justify-between items-center mb-6">
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link
+              underline="hover"
+              color="inherit"
+              onClick={() => navigate("/")}
+              className="cursor-pointer flex items-center"
+            >
+              <HomeIcon className="mr-1" fontSize="small" />
+              Home
+            </Link>
+            <Typography color="text.primary">Attendance Records</Typography>
+          </Breadcrumbs>
+        </Box>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="w-full"
-        >
-          <Card className="border border-gray-200 shadow-xl">
-            <CardHeader
-              title="Attendance Records"
-              subheader="View all attendance records tracked by the system"
-              titleTypographyProps={{ variant: "h4", fontWeight: 700 }}
-            />
-            <CardContent>
-              {loading ? (
-                <Box className="flex justify-center items-center h-40">
-                  <CircularProgress />
-                </Box>
-              ) : (
-                <TableContainer 
-                  component={Paper} 
-                  className="rounded-md"
-                  sx={{ border: 1, borderColor: 'divider' }}
-                >
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>ID</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Email</TableCell>
-                        <TableCell>Last Attendance Date</TableCell>
-                        <TableCell>Last Attendance Time</TableCell>
+        <Card className="border border-gray-200 shadow-xl">
+          <CardHeader
+            title="Attendance Records"
+            subheader="View all attendance records tracked by the system"
+            titleTypographyProps={{ variant: "h4", fontWeight: 700 }}
+          />
+          <CardContent>
+            {loading ? (
+              <Box className="flex justify-center items-center h-40">
+                <CircularProgress />
+              </Box>
+            ) : (
+              <TableContainer
+                component={Paper}
+                className="rounded-md"
+                sx={{ border: 1, borderColor: "divider" }}
+              >
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>ID</TableCell>
+                      <TableCell>Name</TableCell>
+                      <TableCell>Email</TableCell>
+                      <TableCell>Last Attendance Date</TableCell>
+                      <TableCell>Last Attendance Time</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {records.map((record) => (
+                      <TableRow key={record.id} hover>
+                        <TableCell>{record.id}</TableCell>
+                        <TableCell>{record.name}</TableCell>
+                        <TableCell>{record.email}</TableCell>
+                        <TableCell>{record.last_attendance_date}</TableCell>
+                        <TableCell>{record.last_attendance_time}</TableCell>
                       </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {records.map((record) => (
-                        <TableRow key={record.id} hover>
-                          <TableCell>{record.id}</TableCell>
-                          <TableCell>{record.name}</TableCell>
-                          <TableCell>{record.email}</TableCell>
-                          <TableCell>{record.last_attendance_date}</TableCell>
-                          <TableCell>{record.last_attendance_time}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              )}
-            </CardContent>
-          </Card>
-        </motion.div>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            )}
+          </CardContent>
+        </Card>
       </Box>
-    </Layout>
+    </Box>
   );
 };
 

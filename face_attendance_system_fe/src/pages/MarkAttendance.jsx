@@ -3,15 +3,15 @@ import Webcam from "react-webcam";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import config from "../config";
-import { Box, Button, Typography, Paper } from "@mui/material";
+import { Box, Button, Typography, Paper, useMediaQuery, Breadcrumbs, Link } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import Layout from "../components/Layout";
 import { motion } from "framer-motion";
 
 const MarkAttendance = () => {
   const webcamRef = useRef(null);
   const navigate = useNavigate();
   const [hasCamera, setHasCamera] = useState(false);
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   useEffect(() => {
     const checkCamera = async () => {
@@ -57,111 +57,133 @@ const MarkAttendance = () => {
     }
   };
 
+  const webcamWidth = isMobile ? 280 : 320;
+  const webcamHeight = isMobile ? 210 : 240;
+
   return (
-    <Layout>
-      <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          style={{ width: "100%", maxWidth: "600px" }}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "calc(100vh - 64px - 68px)",
+        width: "100%",
+        padding: 4,
+      }}
+    >
+      <Box sx={{ width: "100%", maxWidth: "600px", mb: 2 }}>
+        <Breadcrumbs aria-label="breadcrumb">
+          <Link color="inherit" href="/" underline="hover">
+            Home
+          </Link>
+          <Typography color="text.primary">Mark Attendance</Typography>
+        </Breadcrumbs>
+      </Box>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        style={{
+          width: "100%",
+          maxWidth: "600px",
+        }}
+      >
+        <Paper
+          elevation={4}
+          sx={{
+            p: 4,
+            width: "100%",
+            borderRadius: 2,
+            border: "1px solid",
+            borderColor: "divider",
+          }}
         >
-          <Paper
-            elevation={4}
+          <Typography
+            variant="h5"
+            component="h1"
+            gutterBottom
             sx={{
-              p: 4,
-              width: "100%",
-              borderRadius: 2,
-              border: "1px solid",
-              borderColor: "divider",
+              fontWeight: 700,
+              color: "primary.main",
+              mb: 3,
+              textAlign: "center",
             }}
           >
-            <Typography
-              variant="h4"
-              component="h1"
-              gutterBottom
-              sx={{ 
-                fontWeight: 700, 
-                color: "primary.main", 
-                mb: 3,
-                textAlign: "center"
-              }}
-            >
-              Mark Your Attendance
-            </Typography>
-            <Typography 
-              variant="body1" 
-              color="text.secondary" 
-              sx={{ textAlign: "center", mb: 3 }}
-            >
-              Position your face in the camera and click the button below
-            </Typography>
+            Mark Your Attendance
+          </Typography>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ textAlign: "center", mb: 3 }}
+          >
+            Position your face in the camera and click the button below
+          </Typography>
 
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              {hasCamera ? (
-                <Webcam
-                  ref={webcamRef}
-                  screenshotFormat="image/jpeg"
-                  width={320}
-                  height={240}
-                  style={{ 
-                    borderRadius: "12px", 
-                    marginBottom: "24px",
-                    border: "1px solid",
-                    borderColor: "divider",
-                    backgroundColor: "background.paper"
-                  }}
-                  videoConstraints={{
-                    facingMode: "user",
-                  }}
-                />
-              ) : (
-                <Box
-                  sx={{
-                    width: 320,
-                    height: 240,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    backgroundColor: "background.default",
-                    borderRadius: "12px",
-                    marginBottom: "24px",
-                    border: "1px solid",
-                    borderColor: "divider",
-                  }}
-                >
-                  <Typography color="error">Camera not detected</Typography>
-                </Box>
-              )}
-              <Button
-                variant="contained"
-                onClick={captureAndSubmit}
-                sx={{
-                  py: 1.5,
-                  borderRadius: 2,
-                  fontWeight: 600,
-                  width: "100%",
-                  maxWidth: "320px",
-                  background: "linear-gradient(to right, #1976d2, #9c27b0)",
-                  '&:hover': {
-                    background: "linear-gradient(to right, #1565c0, #7b1fa2)",
-                  }
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            {hasCamera ? (
+              <Webcam
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+                width={webcamWidth}
+                height={webcamHeight}
+                style={{
+                  borderRadius: "12px",
+                  marginBottom: "24px",
+                  border: "1px solid",
+                  borderColor: "divider",
+                  backgroundColor: "background.paper",
                 }}
-                disabled={!hasCamera}
+                videoConstraints={{
+                  facingMode: "user",
+                }}
+              />
+            ) : (
+              <Box
+                sx={{
+                  width: webcamWidth,
+                  height: webcamHeight,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "background.default",
+                  borderRadius: "12px",
+                  marginBottom: "24px",
+                  border: "1px solid",
+                  borderColor: "divider",
+                }}
               >
-                Mark Attendance
-              </Button>
-            </Box>
-          </Paper>
-        </motion.div>
-      </Box>
-    </Layout>
+                <Typography color="error">Camera not detected</Typography>
+              </Box>
+            )}
+            <Button
+              variant="contained"
+              onClick={captureAndSubmit}
+              sx={{
+                py: 1.5,
+                borderRadius: 2,
+                fontWeight: 600,
+                width: "100%",
+                maxWidth: "320px",
+                background: "linear-gradient(to right, #1976d2, #9c27b0)",
+                "&:hover": {
+                  background: "linear-gradient(to right, #1565c0, #7b1fa2)",
+                },
+              }}
+              disabled={!hasCamera}
+            >
+              Mark Attendance
+            </Button>
+          </Box>
+        </Paper>
+      </motion.div>
+    </Box>
   );
 };
 

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
-  Home as HomeIcon,
-  ChevronLeft,
   Camera as CameraIcon,
   PersonAdd as RegisterIcon,
   Schedule as AttendanceIcon,
@@ -18,14 +16,10 @@ import {
   Box,
   AppBar,
   Toolbar,
-  useScrollTrigger,
-  Slide,
 } from "@mui/material";
 import { useTheme } from "../contexts/ThemeContext";
 
 const Navbar = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const accessToken = localStorage.getItem("access_token");
   const [isScrolled, setIsScrolled] = useState(false);
   const { themeMode, toggleTheme } = useTheme();
@@ -49,17 +43,26 @@ const Navbar = () => {
     window.location.reload();
   };
 
+  const getBackgroundColor = () => {
+    if (isScrolled) {
+      return themeMode === "dark" ? "rgba(30, 41, 59, 0.8)" : "rgba(255, 255, 255, 0.8)"; // slate-800
+    }
+    return "transparent";
+  };
+
+  const getBorderBottom = () => {
+    return isScrolled ? "1px solid rgba(0, 0, 0, 0.12)" : "none";
+  };
+
   return (
     <AppBar
       position="fixed"
       elevation={isScrolled ? 4 : 0}
       sx={{
-        backgroundColor: isScrolled
-          ? "rgba(255, 255, 255, 0.8)"
-          : "transparent",
+        backgroundColor: getBackgroundColor(),
         backdropFilter: isScrolled ? "blur(8px)" : "none",
         transition: "all 0.3s ease",
-        borderBottom: isScrolled ? "1px solid rgba(0, 0, 0, 0.12)" : "none",
+        borderBottom: getBorderBottom(),
         zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
     >
@@ -83,8 +86,9 @@ const Navbar = () => {
                 size="small"
                 startIcon={<RegisterIcon />}
                 sx={{
-                  bgcolor: "#4f46e5",
-                  "&:hover": { bgcolor: "#4338ca" },
+                  color: 'white',
+                  backgroundColor: "#4f46e5",
+                  "&:hover": { backgroundColor: "#4338ca" },
                   textTransform: "none",
                 }}
               >
@@ -97,8 +101,9 @@ const Navbar = () => {
                 size="small"
                 startIcon={<AttendanceIcon />}
                 sx={{
-                  bgcolor: "#4f46e5",
-                  "&:hover": { bgcolor: "#4338ca" },
+                  color: 'white',
+                  backgroundColor: "#4f46e5",
+                  "&:hover": { backgroundColor: "#4338ca" },
                   textTransform: "none",
                 }}
               >
@@ -133,7 +138,7 @@ const Navbar = () => {
           )}
         </Box>
 
-        <IconButton onClick={toggleTheme} color="inherit">
+        <IconButton onClick={toggleTheme} sx={{ color: themeMode === "light" ? "black" : "inherit" }}>
           {themeMode === "light" ? <Brightness4Icon /> : <Brightness7Icon />}
         </IconButton>
       </Toolbar>
